@@ -1,0 +1,527 @@
+#suite test_add
+
+#test all_zeros_add
+s21_decimal value1 = {{0, 0, 0, 0}};
+s21_decimal value2 = {{0, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test all_zeros_negative_add
+s21_decimal value1 = {{0, 0, 0, 0b10000000000000000000000000000000}};
+s21_decimal value2 = {{0, 0, 0, 0b10000000000000000000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0, 0b10000000000000000000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test simple1_add
+s21_decimal value1 = {{0b1, 0, 0, 0}};
+s21_decimal value2 = {{0b1, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b10, 0, 0, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test simple2_add
+s21_decimal value1 = {{0, 0b1, 0, 0}};
+s21_decimal value2 = {{0, 0b1, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0b10, 0, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test simple3_add
+s21_decimal value1 = {{0, 0, 0b1, 0}};
+s21_decimal value2 = {{0, 0, 0b1, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0b10, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test full1_add
+s21_decimal value1 = {{0b11111111111111111111111111111110, 0, 0, 0}};
+s21_decimal value2 = {{0b1, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b11111111111111111111111111111111, 0, 0, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test full2_add
+s21_decimal value1 = {{0, 0b11111111111111111111111111111110, 0, 0}};
+s21_decimal value2 = {{0, 0b1, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0b11111111111111111111111111111111, 0, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test full3_add
+s21_decimal value1 = {{0, 0, 0b11111111111111111111111111111110, 0}};
+s21_decimal value2 = {{0, 0, 0b1, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0b11111111111111111111111111111111, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test overflow1_add
+s21_decimal value1 = {{0b11111111111111111111111111111111, 0, 0, 0}};
+s21_decimal value2 = {{0b1, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0b1, 0, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test overflow2_add
+s21_decimal value1 = {{0, 0b11111111111111111111111111111111, 0, 0}};
+s21_decimal value2 = {{0, 0b1, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0b1, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test overflow3_add
+s21_decimal value1 = {{0, 0, 0b11111111111111111111111111111111, 0}};
+s21_decimal value2 = {{0, 0, 0b1, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+// s21_decimal answer = {{0, 0, 0, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 1);
+// for(int i = 0; i < 4; ++i) {
+//   ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+// }
+
+#test zero_result1_add
+s21_decimal value1 = {{0b11111111111111111111111111111111, 0, 0, 0}};
+s21_decimal value2 = {{0b11111111111111111111111111111111, 0, 0,
+                       0b10000000000000000000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test zero_result1_simple_add
+s21_decimal value1 = {{0b1, 0, 0, 0}};
+s21_decimal value2 = {{0b1, 0, 0, 0b10000000000000000000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test zero_result2_add
+s21_decimal value1 = {{0, 0b11111111111111111111111111111111, 0, 0}};
+s21_decimal value2 = {{0, 0b11111111111111111111111111111111, 0,
+                       0b10000000000000000000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test zero_result2_simple_add
+s21_decimal value1 = {{0, 0b1, 0, 0}};
+s21_decimal value2 = {{0, 0b1, 0, 0b10000000000000000000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test zero_result3_add
+s21_decimal value1 = {{0, 0, 0b11111111111111111111111111111111, 0}};
+s21_decimal value2 = {{0, 0, 0b11111111111111111111111111111111,
+                       0b10000000000000000000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test zero_result3_simple_add
+s21_decimal value1 = {{0, 0, 0b1, 0}};
+s21_decimal value2 = {{0, 0, 0b1, 0b10000000000000000000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0, 0}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test simple1_negative_add
+s21_decimal value1 = {{0b1, 0, 0, 0b10000000000000000000000000000000}};
+s21_decimal value2 = {{0b1, 0, 0, 0b10000000000000000000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b10, 0, 0, 0b10000000000000000000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test simple2_negative_add
+s21_decimal value1 = {{0, 0b1, 0, 0b10000000000000000000000000000000}};
+s21_decimal value2 = {{0, 0b1, 0, 0b10000000000000000000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0b10, 0, 0b10000000000000000000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test simple3_negative_add
+s21_decimal value1 = {{0, 0, 0b1, 0b10000000000000000000000000000000}};
+s21_decimal value2 = {{0, 0, 0b1, 0b10000000000000000000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0b10, 0b10000000000000000000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test full1_negative_add
+s21_decimal value1 = {{0b11111111111111111111111111111110, 0, 0b1,
+                       0b10000000000000000000000000000000}};
+s21_decimal value2 = {{0b1, 0, 0, 0b10000000000000000000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b11111111111111111111111111111111, 0, 0b1,
+                       0b10000000000000000000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test full2_negative_add
+s21_decimal value1 = {{0, 0b11111111111111111111111111111110, 0b1,
+                       0b10000000000000000000000000000000}};
+s21_decimal value2 = {{0, 0b1, 0, 0b10000000000000000000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0b11111111111111111111111111111111, 0b1,
+                       0b10000000000000000000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test full3_negative_add
+s21_decimal value1 = {{0, 0, 0b11111111111111111111111111111110,
+                       0b10000000000000000000000000000000}};
+s21_decimal value2 = {{0, 0, 0b1, 0b10000000000000000000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0b11111111111111111111111111111111,
+                       0b10000000000000000000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test overflow1_negative_add
+s21_decimal value1 = {{0b11111111111111111111111111111111, 0, 0,
+                       0b10000000000000000000000000000000}};
+s21_decimal value2 = {{0b1, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b11111111111111111111111111111110, 0, 0,
+                       0b10000000000000000000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test overflow2_negative_add
+s21_decimal value1 = {{0, 0b11111111111111111111111111111111, 0,
+                       0b10000000000000000000000000000000}};
+s21_decimal value2 = {{0, 0b1, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0b11111111111111111111111111111110, 0,
+                       0b10000000000000000000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test overflow3_negative_add
+s21_decimal value1 = {{0, 0, 0b11111111111111111111111111111111,
+                       0b10000000000000000000000000000000}};
+s21_decimal value2 = {{0, 0, 0b1, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0b11111111111111111111111111111110,
+                       0b10000000000000000000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test scale1_diff_add
+s21_decimal value1 = {{0b11111111, 0, 0, 0}};
+s21_decimal value2 = {{0b111111, 0, 0, 0b10000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b101000110101, 0, 0, 0b10000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test scale1_diff2_add
+s21_decimal value1 = {{0b111111, 0, 0, 0}};
+s21_decimal value2 = {{0b11111111, 0, 0, 0b10000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b1101110101, 0, 0, 0b10000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test scale1_diff_negative_add
+s21_decimal value1 = {{0b11111111, 0, 0, 0}};
+s21_decimal value2 = {{0b111111, 0, 0, 0b10000000000000010000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b100110110111, 0, 0, 0b10000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test scale1_diff2_negative_add
+s21_decimal value1 = {{0b111111, 0, 0, 0}};
+s21_decimal value2 = {{0b11111111, 0, 0, 0b10000000000000010000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b101110111, 0, 0, 0b10000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test scale11_diff_add
+s21_decimal value1 = {{0b11111111, 0, 0, 0}};
+s21_decimal value2 = {{0b111111, 0, 0, 0b10110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b00101110011100010001100000111111, 0b1011100110001, 0,
+                       0b10110000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test scale11_diff2_add
+s21_decimal value1 = {{0b111111, 0, 0, 0}};
+s21_decimal value2 = {{0b11111111, 0, 0, 0b10110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b11010101010000110001100011111111, 0b10110111010, 0,
+                       0b10110000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test scale11_diff_negative_add
+s21_decimal value1 = {{0b11111111, 0, 0, 0}};
+s21_decimal value2 = {{0b111111, 0, 0, 0b10000000000010110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b00101110011100010001011111000001, 0b1011100110001, 0,
+                       0b10110000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test scale11_diff2_negative_add
+s21_decimal value1 = {{0b111111, 0, 0, 0}};
+s21_decimal value2 = {{0b11111111, 0, 0, 0b10000000000010110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b11010101010000110001011100000001, 0b10110111010, 0,
+                       0b10110000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test scale19_diff_add
+s21_decimal value1 = {{0b11111111, 0, 0, 0}};
+s21_decimal value2 = {{0b111111, 0, 0, 0b100110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b01011110000110000000000000111111,
+                       0b00111100010110111110000110000101, 0b10001010,
+                       0b100110000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test scale19_diff2_add
+s21_decimal value1 = {{0b111111, 0, 0, 0}};
+s21_decimal value2 = {{0b11111111, 0, 0, 0b100110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b11110000000110000000000011111111,
+                       0b00100111000000011001111000011101, 0b100010,
+                       0b100110000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test scale19_diff_negative_add
+s21_decimal value1 = {{0b11111111, 0, 0, 0}};
+s21_decimal value2 = {{0b111111, 0, 0, 0b10000000000100110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b01011110000101111111111111000001,
+                       0b00111100010110111110000110000101, 0b10001010,
+                       0b100110000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test scale19_diff2_negative_add
+s21_decimal value1 = {{0b111111, 0, 0, 0}};
+s21_decimal value2 = {{0b11111111, 0, 0, 0b10000000000100110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b11110000000101111111111100000001,
+                       0b00100111000000011001111000011101, 0b100010,
+                       0b100110000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test scale28_diff_add
+s21_decimal value1 = {{0, 0b11111111111111111111111111111110, 0b1,
+                       0b00000000000111000000000000000000}};
+s21_decimal value2 = {{0b111, 0b1, 0b110, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {
+    {0b00101001101110010010011100000000, 0b00000101111101011110000100000000,
+     0b00100011110000110100011000000000, 0b111000000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test cmp_bigger_add
+s21_decimal value1 = {{0b1111, 0, 0, 0}};
+s21_decimal value2 = {{0b111, 0b1, 0b110, 0b10000000000100110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b00010100100101111111111111111001,
+                       0b00100001101010110000110101000011, 0b10,
+                       0b100110000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test cmp_less_add
+s21_decimal value1 = {{0b111, 0b1, 0b110, 0b10000000000100110000000000000000}};
+s21_decimal value2 = {{0b1111, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b00010100100101111111111111111001,
+                       0b00100001101010110000110101000011, 0b10,
+                       0b100110000000000000000}};
+
+int error = s21_add(value1, value2, &result);
+ck_assert_int_eq(error, 0);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}

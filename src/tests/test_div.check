@@ -1,0 +1,138 @@
+#suite test_div
+
+#test first_zero_big_div
+s21_big_decimal value1 = {{0, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal value2 = {{0b111, 0b111, 0b111, 0, 0, 0b1, 0, 0}};
+s21_big_decimal result = {{0, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal answer = {{0, 0, 0, 0, 0, 0, 0, 0}};
+
+s21_big_div(value1, value2, &result);
+
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test big_ten_by_ten_div
+s21_big_decimal value1 = {{0b1100100, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal value2 = {{0b1010, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal result = {{0, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal answer = {{0b1010, 0, 0, 0, 0, 0, 0, 0}};
+
+s21_big_div(value1, value2, &result);
+
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test big_hundred_by_ten_div
+s21_big_decimal value1 = {{0b1111101000, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal value2 = {{0b1010, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal result = {{0, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal answer = {{0b1100100, 0, 0, 0, 0, 0, 0, 0}};
+
+s21_big_div(value1, value2, &result);
+
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test big_thousand_by_ten_div
+s21_big_decimal value1 = {{0b10011100010000, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal value2 = {{0b1010, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal result = {{0, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal answer = {{0b1111101000, 0, 0, 0, 0, 0, 0, 0}};
+
+s21_big_div(value1, value2, &result);
+
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test big_ten_thousand_by_ten_div
+s21_big_decimal value1 = {{0b11000011010100000, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal value2 = {{0b1010, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal result = {{0, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal answer = {{0b10011100010000, 0, 0, 0, 0, 0, 0, 0}};
+
+s21_big_div(value1, value2, &result);
+
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test big_hundred_thousand_by_ten_div
+s21_big_decimal value1 = {{0b11110100001001000000, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal value2 = {{0b1010, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal result = {{0, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal answer = {{0b11000011010100000, 0, 0, 0, 0, 0, 0, 0}};
+
+s21_big_div(value1, value2, &result);
+
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test big_million_by_ten_div
+s21_big_decimal value1 = {{0b100110001001011010000000, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal value2 = {{0b1010, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal result = {{0, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal answer = {{0b11110100001001000000, 0, 0, 0, 0, 0, 0, 0}};
+
+s21_big_div(value1, value2, &result);
+
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test big_ten_million_by_ten_div
+s21_big_decimal value1 = {{0b101111101011110000100000000, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal value2 = {{0b1010, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal result = {{0, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal answer = {{0b100110001001011010000000, 0, 0, 0, 0, 0, 0, 0}};
+
+s21_big_div(value1, value2, &result);
+
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test big_hundred_million_by_ten_div
+s21_big_decimal value1 = {
+    {0b111011100110101100101000000000, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal value2 = {{0b1010, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal result = {{0, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal answer = {{0b101111101011110000100000000, 0, 0, 0, 0, 0, 0, 0}};
+
+s21_big_div(value1, value2, &result);
+
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test big_milliard_by_ten_div
+s21_big_decimal value1 = {
+    {0b01010100000010111110010000000000, 0b10, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal value2 = {{0b1010, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal result = {{0, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal answer = {
+    {0b111011100110101100101000000000, 0, 0, 0, 0, 0, 0, 0}};
+
+s21_big_div(value1, value2, &result);
+
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test big_ten_milliard_by_ten_div
+s21_big_decimal value1 = {
+    {0b01001000011101101110100000000000, 0b10111, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal value2 = {{0b1010, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal result = {{0, 0, 0, 0, 0, 0, 0, 0}};
+s21_big_decimal answer = {
+    {0b01010100000010111110010000000000, 0b10, 0, 0, 0, 0, 0, 0}};
+
+s21_big_div(value1, value2, &result);
+
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}

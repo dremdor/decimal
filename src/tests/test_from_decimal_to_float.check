@@ -1,0 +1,44 @@
+#suite test_from_decimal_to_float
+
+#test decimal_to_float_positive_test
+s21_decimal value = {{0b00000000000000000011000000111001, 0, 0,
+                      0b00000000000001000000000000000000}};  // 1.2345;
+float result = 0;
+float answer = 1.2345;
+
+int res_code = s21_from_decimal_to_float(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+ck_assert_float_eq(result, answer);  // Проверка результата
+
+#test decimal_to_float_zero_test
+s21_decimal value = {{0, 0, 0, 0}};  // 0.0
+float result = 0;
+float answer = 0.0f;
+
+int res_code = s21_from_decimal_to_float(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+ck_assert_float_eq(result, answer);  // Проверка результата
+
+#test decimal_to_float_negative_small
+s21_decimal value = {{0b00000000000000000011000000111001, 0, 0,
+                      0b10000000000001000000000000000000}};  // -1.2345
+float result = 0;
+float answer = -1.2345;
+
+int res_code = s21_from_decimal_to_float(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+ck_assert_float_eq(result, answer);  // Проверка результата
+
+#test decimal_to_float_negative_integer
+s21_decimal value = {
+    {0b01111011, 0, 0, 0b10000000000000000000000000000000}};  // -123
+float result = 0;
+float answer = -123.0;
+
+int res_code = s21_from_decimal_to_float(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+ck_assert_float_eq(result, answer);  // Проверка результата

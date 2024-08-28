@@ -1,0 +1,187 @@
+#suite test_from_decimal_to_int
+
+#test decimal_to_int_plus
+s21_decimal value = {{0b00000000000000000011000000111001, 0, 0, 0}};
+int result = 0;
+int answer = 12345;
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_minus
+s21_decimal value = {{0b00000000000000000001101010000101, 0, 0,
+                      0x80000000}};  // Знак минуса в bits[3]
+int result = 0;
+int answer = -6789;
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_minus_one
+s21_decimal value = {
+    {0b00000000000000000000000000000001, 0, 0, 0x80000000}};  // -1
+int result = 0;
+int answer = -1;
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_minus_two
+s21_decimal value = {
+    {0b00000000000000000000000000000010, 0, 0, 0x80000000}};  // -2
+int result = 0;
+int answer = -2;
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_minus_three
+s21_decimal value = {
+    {0b00000000000000000000000000000011, 0, 0, 0x80000000}};  // -3
+int result = 0;
+int answer = -3;
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_min
+s21_decimal value = {{0b01111111111111111111111111111111, 0, 0,
+                      0x80000000}};  // Минимальное значение -2147483647
+int result = 0;
+int answer = -2147483647;  // INT_MIN
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_max
+s21_decimal value = {{0b01111111111111111111111111111111, 0, 0,
+                      0}};  // Максимальное значение 2147483647
+int result = 0;
+int answer = 2147483647;  // INT_MAX
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_max_overflow
+s21_decimal value = {
+    {0b11111111111111111111111111111111, 0, 0, 0}};  // max overflow
+int result = 0;
+int answer = 0;
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 1);  // Проверка на наличие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_overflow
+s21_decimal value = {
+    {0b10000000000000000000000000000000, 0, 0, 0}};  // overflow
+int result = 0;
+int answer = 0;
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 1);  // Проверка на наличие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_overflow_plus_one
+s21_decimal value = {
+    {0b10000000000000000000000000000001, 0, 0, 0}};  // overflow + 1
+int result = 0;
+int answer = 0;
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 1);  // Проверка на наличие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_overflow_two_byte
+s21_decimal value = {
+    {0, 0b00000000000000000000000000000001, 0, 0}};  // overflow two byte
+int result = 0;
+int answer = 0;
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 1);  // Проверка на наличие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_overflow_three_byte
+s21_decimal value = {
+    {0, 0, 0b00000000000000000000000000000001, 0}};  // overflow three byte
+int result = 0;
+int answer = 0;
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 1);  // Проверка на наличие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_overflow_sing_minus
+s21_decimal value = {{0b10000000000000000000000000000000, 0, 0,
+                      0x80000000}};  // overflow, sing minus
+int result = 0;
+int answer = 0;
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 1);  // Проверка на наличие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_overflow_plus_one_sing_minus
+s21_decimal value = {{0b10000000000000000000000000000001, 0, 0,
+                      0x80000000}};  // overflow + 1, sing minus
+int result = 0;
+int answer = 0;
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 1);  // Проверка на наличие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_overflow_two_byte_sing_minus
+s21_decimal value = {{0, 0b00000000000000000000000000000001, 0,
+                      0x80000000}};  // overflow two byte, sing minus
+int result = 0;
+int answer = 0;
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 1);  // Проверка на наличие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_overflow_three_byte_sing_minus
+s21_decimal value = {{0, 0, 0b00000000000000000000000000000001,
+                      0x80000000}};  // overflow two three, sing minus
+int result = 0;
+int answer = 0;
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 1);  // Проверка на наличие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата
+
+#test decimal_to_int_max_overflow_sing_minus
+s21_decimal value = {{0b11111111111111111111111111111111, 0, 0,
+                      0x80000000}};  // max overflow, sing minus
+int result = 0;
+int answer = 0;
+
+int res_code = s21_from_decimal_to_int(value, &result);
+
+ck_assert_int_eq(res_code, 1);  // Проверка на наличие ошибки
+ck_assert_int_eq(result, answer);  // Проверка результата

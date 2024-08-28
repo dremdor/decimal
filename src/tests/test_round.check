@@ -1,0 +1,87 @@
+#suite test_round
+
+#test all_zeros_round
+s21_decimal value1 = {{0, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0, 0}};
+
+s21_round(value1, &result);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test int_round
+s21_decimal value1 = {{0b11110000000100110001101, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b11110000000100110001101, 0, 0, 0}};
+
+s21_round(value1, &result);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test float_round
+s21_decimal value1 = {{0b11110000000100110001101, 0, 0, 0b110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b1111010111011, 0, 0, 0}};
+
+s21_round(value1, &result);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test float2_round
+s21_decimal value1 = {{0b11110000000100010000011, 0, 0, 0b110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b1111010111010, 0, 0, 0}};
+
+s21_round(value1, &result);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test float3_round
+s21_decimal value1 = {{0b11110000000100010000100, 0, 0, 0b110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b1111010111011, 0, 0, 0}};
+
+s21_round(value1, &result);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test float_negative_round
+s21_decimal value1 = {
+    {0b11110000000100110001101, 0, 0, 0b10000000000000110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {
+    {0b1111010111011, 0, 0, 0b10000000000000000000000000000000}};
+
+s21_round(value1, &result);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test float_negative2_round
+s21_decimal value1 = {
+    {0b11110000000100010000011, 0, 0, 0b10000000000000110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {
+    {0b1111010111010, 0, 0, 0b10000000000000000000000000000000}};
+
+s21_round(value1, &result);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test float_negative3_round
+s21_decimal value1 = {
+    {0b11110000000100010000100, 0, 0, 0b10000000000000110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {
+    {0b1111010111011, 0, 0, 0b10000000000000000000000000000000}};
+
+s21_round(value1, &result);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}

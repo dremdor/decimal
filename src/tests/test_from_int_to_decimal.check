@@ -1,0 +1,100 @@
+#suite test_from_int_to_decimal
+
+#test int_to_decimal_plus
+int value = 12345;
+s21_decimal result = {0};
+s21_decimal answer = {{0b00000000000000000011000000111001, 0, 0, 0}};  // 12345
+
+int res_code = s21_from_int_to_decimal(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]),
+                   sizeof(int));  // Проверка результата
+}
+
+#test int_to_decimal_minus
+int value = -6789;
+s21_decimal result = {0};
+s21_decimal answer = {{0b00000000000000000001101010000101, 0, 0,
+                       0x80000000}};  // -6789, знак минуса в bits[3]
+
+int res_code = s21_from_int_to_decimal(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test int_to_decimal_minus_one
+int value = -1;
+s21_decimal result = {0};
+s21_decimal answer = {
+    {0b00000000000000000000000000000001, 0, 0, 0x80000000}};  // -1
+
+int res_code = s21_from_int_to_decimal(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test int_to_decimal_minus_two
+int value = -2;
+s21_decimal result = {0};
+s21_decimal answer = {
+    {0b00000000000000000000000000000010, 0, 0, 0x80000000}};  // -2
+
+int res_code = s21_from_int_to_decimal(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test int_to_decimal_minus_three
+int value = -3;
+s21_decimal result = {0};
+s21_decimal answer = {
+    {0b00000000000000000000000000000011, 0, 0, 0x80000000}};  // -3
+
+int res_code = s21_from_int_to_decimal(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test int_to_decimal_min
+int value = -2147483647;  // INT_MIN
+s21_decimal result = {0};
+s21_decimal answer = {{0b01111111111111111111111111111111, 0, 0,
+                       0x80000000}};  // Минимальное значение -2147483647
+
+int res_code = s21_from_int_to_decimal(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test int_to_decimal_max
+int value = 2147483647;  // INT_MAX
+s21_decimal result = {0};
+s21_decimal answer = {{0b01111111111111111111111111111111, 0, 0,
+                       0}};  // Максимальное значение 2147483647
+
+int res_code = s21_from_int_to_decimal(value, &result);
+
+ck_assert_int_eq(res_code, 0);  // Проверка на отсутствие ошибки
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test int_to_decimal_conversion_error
+int value = 2147483647;  // INT_MAX
+s21_decimal *result = NULL;
+
+int res_code = s21_from_int_to_decimal(value, result);
+
+ck_assert_int_eq(res_code, 1);  // Проверка на наличие ошибки

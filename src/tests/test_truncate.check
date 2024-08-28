@@ -1,0 +1,31 @@
+#suite test_truncate
+
+#test all_zeros_truncate
+s21_decimal value1 = {{0, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0, 0}};
+
+s21_truncate(value1, &result);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test int_truncate
+s21_decimal value1 = {{0b11110000000100110001101, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b11110000000100110001101, 0, 0, 0}};
+
+s21_truncate(value1, &result);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test float_truncate
+s21_decimal value1 = {{0b11110000000100110001101, 0, 0, 0b110000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0b1111010111010, 0, 0, 0}};
+
+s21_truncate(value1, &result);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}

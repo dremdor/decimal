@@ -1,0 +1,21 @@
+#suite test_negate
+
+#test all_zeros_negate
+s21_decimal value1 = {{0, 0, 0, 0}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0, 0b10000000000000000000000000000000}};
+
+s21_negate(value1, &result);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}
+
+#test all_zeros_negative_negate
+s21_decimal value1 = {{0, 0, 0, 0b10000000000000000000000000000000}};
+s21_decimal result = {{0, 0, 0, 0}};
+s21_decimal answer = {{0, 0, 0, 0}};
+
+s21_negate(value1, &result);
+for (int i = 0; i < 4; ++i) {
+  ck_assert_mem_eq(&(result.bits[i]), &(answer.bits[i]), sizeof(int));
+}

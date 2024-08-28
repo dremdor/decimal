@@ -1,0 +1,129 @@
+#suite test_comparsion
+
+#test all_zeros_test
+s21_decimal value1 = {{0, 0, 0, 0}};
+s21_decimal value2 = {{0, 0, 0, 0}};
+ck_assert_int_eq(s21_is_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_not_equal(value1, value2), 0);
+ck_assert_int_eq(s21_is_greater(value1, value2), 0);
+ck_assert_int_eq(s21_is_less(value1, value2), 0);
+ck_assert_int_eq(s21_is_greater_or_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_less_or_equal(value1, value2), 1);
+
+#test all_bits_positive_test
+s21_decimal value1 = {{0b11111111111111111111111111111111,
+                       0b11111111111111111111111111111111,
+                       0b11111111111111111111111111111111, 0}};
+s21_decimal value2 = {{0b11111111111111111111111111111111,
+                       0b11111111111111111111111111111111,
+                       0b11111111111111111111111111111111, 0}};
+ck_assert_int_eq(s21_is_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_not_equal(value1, value2), 0);
+ck_assert_int_eq(s21_is_greater(value1, value2), 0);
+ck_assert_int_eq(s21_is_less(value1, value2), 0);
+ck_assert_int_eq(s21_is_greater_or_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_less_or_equal(value1, value2), 1);
+
+#test all_bits_negative_test
+s21_decimal value1 = {
+    {0b11111111111111111111111111111111, 0b11111111111111111111111111111111,
+     0b11111111111111111111111111111111, 0b10000000000000000000000000000000}};
+s21_decimal value2 = {
+    {0b11111111111111111111111111111111, 0b11111111111111111111111111111111,
+     0b11111111111111111111111111111111, 0b10000000000000000000000000000000}};
+ck_assert_int_eq(s21_is_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_not_equal(value1, value2), 0);
+ck_assert_int_eq(s21_is_greater(value1, value2), 0);
+ck_assert_int_eq(s21_is_less(value1, value2), 0);
+ck_assert_int_eq(s21_is_greater_or_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_less_or_equal(value1, value2), 1);
+
+#test one_and_zero_test
+s21_decimal value1 = {{0b1, 0, 0, 0}};
+s21_decimal value2 = {{0, 0, 0, 0}};
+ck_assert_int_eq(s21_is_equal(value1, value2), 0);
+ck_assert_int_eq(s21_is_not_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_greater(value1, value2), 1);
+ck_assert_int_eq(s21_is_less(value1, value2), 0);
+ck_assert_int_eq(s21_is_greater_or_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_less_or_equal(value1, value2), 0);
+
+#test zero_and_one_test
+s21_decimal value1 = {{0, 0, 0, 0}};
+s21_decimal value2 = {{0b1, 0, 0, 0}};
+ck_assert_int_eq(s21_is_equal(value1, value2), 0);
+ck_assert_int_eq(s21_is_not_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_greater(value1, value2), 0);
+ck_assert_int_eq(s21_is_less(value1, value2), 1);
+ck_assert_int_eq(s21_is_greater_or_equal(value1, value2), 0);
+ck_assert_int_eq(s21_is_less_or_equal(value1, value2), 1);
+
+#test zero_one_negative_test
+s21_decimal value1 = {{0, 0, 0, 0b10000000000000000000000000000000}};
+s21_decimal value2 = {{0, 0, 0, 0}};
+ck_assert_int_eq(s21_is_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_not_equal(value1, value2), 0);
+ck_assert_int_eq(s21_is_greater(value1, value2), 0);
+ck_assert_int_eq(s21_is_less(value1, value2), 0);
+ck_assert_int_eq(s21_is_greater_or_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_less_or_equal(value1, value2), 1);
+
+#test zero_two_negative_test
+s21_decimal value1 = {{0, 0, 0, 0}};
+s21_decimal value2 = {{0, 0, 0, 0b10000000000000000000000000000000}};
+ck_assert_int_eq(s21_is_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_not_equal(value1, value2), 0);
+ck_assert_int_eq(s21_is_greater(value1, value2), 0);
+ck_assert_int_eq(s21_is_less(value1, value2), 0);
+ck_assert_int_eq(s21_is_greater_or_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_less_or_equal(value1, value2), 1);
+
+#test second_bit_diff_sign1_test
+s21_decimal value1 = {{0, 0b1, 0, 0b10000000000000000000000000000000}};
+s21_decimal value2 = {{0, 0b1, 0, 0}};
+ck_assert_int_eq(s21_is_equal(value1, value2), 0);
+ck_assert_int_eq(s21_is_not_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_greater(value1, value2), 0);
+ck_assert_int_eq(s21_is_less(value1, value2), 1);
+ck_assert_int_eq(s21_is_greater_or_equal(value1, value2), 0);
+ck_assert_int_eq(s21_is_less_or_equal(value1, value2), 1);
+
+#test second_bit_diff_sign2_test
+s21_decimal value1 = {{0, 0b1, 0, 0}};
+s21_decimal value2 = {{0, 0b1, 0, 0b10000000000000000000000000000000}};
+ck_assert_int_eq(s21_is_equal(value1, value2), 0);
+ck_assert_int_eq(s21_is_not_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_greater(value1, value2), 1);
+ck_assert_int_eq(s21_is_less(value1, value2), 0);
+ck_assert_int_eq(s21_is_greater_or_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_less_or_equal(value1, value2), 0);
+
+#test second_bit_diff_sign3_test
+s21_decimal value1 = {{0, 0b1, 0, 0b10000000000000000000000000000000}};
+s21_decimal value2 = {{0, 0b1, 0, 0b10000000000000000000000000000000}};
+ck_assert_int_eq(s21_is_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_not_equal(value1, value2), 0);
+ck_assert_int_eq(s21_is_greater(value1, value2), 0);
+ck_assert_int_eq(s21_is_less(value1, value2), 0);
+ck_assert_int_eq(s21_is_greater_or_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_less_or_equal(value1, value2), 1);
+
+#test diff_bits_test
+s21_decimal value1 = {{0, 0b0, 0b1, 0}};
+s21_decimal value2 = {{0b1, 0b1, 0, 0}};
+ck_assert_int_eq(s21_is_equal(value1, value2), 0);
+ck_assert_int_eq(s21_is_not_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_greater(value1, value2), 1);
+ck_assert_int_eq(s21_is_less(value1, value2), 0);
+ck_assert_int_eq(s21_is_greater_or_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_less_or_equal(value1, value2), 0);
+
+#test diff_bits_negative_test
+s21_decimal value1 = {{0, 0b0, 0b1, 0b10000000000000000000000000000000}};
+s21_decimal value2 = {{0b1, 0b1, 0, 0b10000000000000000000000000000000}};
+ck_assert_int_eq(s21_is_equal(value1, value2), 0);
+ck_assert_int_eq(s21_is_not_equal(value1, value2), 1);
+ck_assert_int_eq(s21_is_greater(value1, value2), 0);
+ck_assert_int_eq(s21_is_less(value1, value2), 1);
+ck_assert_int_eq(s21_is_greater_or_equal(value1, value2), 0);
+ck_assert_int_eq(s21_is_less_or_equal(value1, value2), 1);
